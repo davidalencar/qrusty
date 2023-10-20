@@ -1,5 +1,8 @@
 defmodule Qrusty.Native.Options do
   defstruct format: :svg,
+            version: 7,
+            dark_color: "#313131",
+            light_color: "#ffffff",
             width: 200,
             height: 200,
             error_correction: :m

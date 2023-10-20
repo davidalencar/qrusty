@@ -15,13 +15,18 @@ struct Options {
     pub height: u32,
     pub error_correction: ECL,
     pub format: Format,
+    pub dark_color: String,
+    pub light_color: String,
+    pub version: i16,
 }
 
 #[rustler::nif]
 fn svg_nif(data: &str, opts: Options) -> Result<(Atom, String), Error> {
-    let code = QrCode::with_error_correction_level(data.as_bytes(), opts.error_correction.t()).unwrap();
+    let code = QrCode::with_version(data.as_bytes(), Version::Normal(opts.version), opts.error_correction.t()).unwrap();
     let svg = code.render::<svg::Color>()
                 .min_dimensions(opts.width, opts.height)
+                .dark_color(svg::Color(local_dark_color))
+                .light_color(svg::Color(local_light_color))
                 .build();
     Ok((ok(), svg))
 }
